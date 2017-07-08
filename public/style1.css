@@ -1,0 +1,13 @@
+rect {
+  fill:blue;
+}
+text {
+  font-family: "Open Sans";
+  text-anchor: middle;
+  color: rgb(34,​ 34,​ 34);
+  font-size: 40px;
+}
+h1{
+    color: red;
+}
+

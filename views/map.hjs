@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+	.state{
+		fill: none;
+		stroke: #a9a9a9;
+		stroke-width: 1;
+	}
+	.state:hover{
+		fill-opacity:0.5;
+	}
+	.alnright { text-align: right; }
+	#tooltip {   
+		position: absolute;           
+		text-align: center;
+		padding: 20px;             
+		margin: 10px;
+		font: 12px sans-serif;        
+		background: lightsteelblue;   
+		border: 1px;      
+		border-radius: 2px;           
+		pointer-events: none;         
+	}
+	#tooltip h4{
+		margin:0;
+		font-size:14px;
+	}
+	#tooltip{
+		background:rgba(0,0,0,0.9);
+		border:1px solid grey;
+		border-radius:5px;
+		font-size:12px;
+		width:auto;
+		padding:4px;
+		color:white;
+		opacity:0;
+	}
+	#tooltip table{
+		table-layout:fixed;
+	}
+	#tooltip tr td{
+		padding:0;
+		margin:0;
+	}
+	#tooltip tr td:nth-child(1){
+		width:50px;
+	}
+	#tooltip tr td:nth-child(2){
+		text-align:center;
+	}
+
+	table, th, td {
+   border: 1px solid black;
+}
+</style>
+<head>
+	<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+
+
+<div class="container">
+      <div class="row">
+        <h3 class="nine columns">Job statistics map</h3>
+     
+      </div>
+      <div id="map"><svg width="960" height="600" id="statesvg"></svg></div>
+      <div id="legend4"><!-- Legend container --></div>
+
+      <div id="details" class="hidden row">
+
+      <div id="initial">
+	  
+        <h5>Instructions</h5>
+        
+      </div></div>
+      <div class="footer">
+        
+      </div>
+    </div>
+
+
+
+<div id="tooltip"></div><!-- div to hold tooltip. -->
+ <!-- svg to hold the map. -->
+<script src="/uStates.js"></script> <!-- creates uStates. -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/scale.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js" charset="utf-8"></script>
+<script>
+
+	function tooltipHtml(n, d){	
+		return "<h4>"+n+"</h4><table>"+
+			"<tr><td>openings</td><td>"+(d.openings)+"</td></tr>"+
+			"</table>";
+	}
+
+
+	
+  var dataOrginal=[ {{#items}}
+                    {place:'{{place}}',openings:{{openings}}},
+                    {{/items}}]
+                    
+  
+	var sampleData2 ={};
+  for(var i=0; i<dataOrginal.length;i++)
+  {
+	  
+					sampleData2[dataOrginal[i].place]={
+
+						openings:dataOrginal[i].openings
+					}; 
+	
+  }
+  console.log(sampleData2);
+	
+	uStates.draw("#statesvg", sampleData2, tooltipHtml);
+
+
+
+	   
+            var svg=d3.select("#legend4")
+                         .append("svg")
+                         .attr("width",1000)
+                         .attr("height",40);
+
+var defs = svg.append("defs");
+
+var linearGradient = defs.append("linearGradient")
+    .attr("id", "linear-gradient");
+
+    
+linearGradient.append("stop") 
+    .attr("offset", "0%")   
+    .attr("stop-color", "red"); //light blue
+
+//Set the color for the end (100%)
+linearGradient.append("stop") 
+    .attr("offset", "100%")   
+    .attr("stop-color", "grey"); //dark blue
+
+
+    svg.append("rect")
+	.attr("width", 900)
+	.attr("height", 20)
+	.style("fill", "url(#linear-gradient)");
+
+
+let data = ["hello","h","h"];
+
+
+var scaling=d3.scale.linear().domain([0,200]).range([0,900]);
+  
+let x = d3
+		.scale.linear()
+		.range([0, 600])
+    .domain(d3.extent(data));   
+
+let xAxis = d3
+	.svg.axis(x)
+  .ticks(10).scale(scaling);
+
+  
+
+svg.call(xAxis);
+	
+	
+</script>
+
+</body>

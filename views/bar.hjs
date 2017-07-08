@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+    <title>JOB DETAILS</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style1.css" />
+    
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+  
+</head>
+<body>
+
+<h1>Job Vacancy Statistics</h1>
+
+   <svg id="chart" width="2500" height="3000"></svg>
+
+        <script>
+
+        var data = [
+        {{#items}}
+            { place: '{{place}}', openings: {{openings}} }, 
+
+        {{/items}} ]
+
+var g = d3.select('#chart')
+  .selectAll("g")
+  .data(data)
+  .enter()
+  .append('g')
+  .attr("transform", "translate(50,5)");
+g.append("rect")
+  .attr('x', 40)
+  .attr('y', ( d, i)=> (i+1) * 100)
+  .attr('width', (d)=> d.openings*20)
+  .attr('height',30)
+g.append("text")
+  .attr('x', 40)
+  .attr('y', (d, i)=> ((i+1) * 100)-5)
+  .text((d)=> d.place)
+
+        </script>
+
+    
+    
+</body>

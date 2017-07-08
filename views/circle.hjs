@@ -1,0 +1,40 @@
+<html>
+    <title>learning d3</title>
+    <head>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <link rel="stylesheet" href="d3_4.css"/>
+    </head>
+    <body>
+
+        <svg id="chart" width="1500" height="3500"></svg>
+
+        <script>
+
+          var data = [
+        {{#items}}
+            { place: '{{place}}', openings: {{openings}} }, 
+
+        {{/items}} ]
+
+var r=d3.scaleSqrt().domain([0,50]).range(0,500);        
+
+var g = d3.select('#chart')
+  .selectAll("g")
+  .data(data)
+  .enter()
+  .append('g')
+  .attr("transform", "translate(50,50)");
+g.append("circle")
+  .attr('cx', 40)
+  .attr('cy', ( d, i)=> (i+1) * 100)
+  .attr('r', (d)=> d.openings*2)
+g.append("text")
+  .attr('x', (d)=>50+(d.openings+10))
+  .attr('y', (d, i)=> ((i+1) * 100)+5)
+  .text((d)=> d.place)
+
+        </script>
+
+        
+    </body>
+</html>
